@@ -84,7 +84,7 @@ const login = async function (req, res) {
                 status: false,
                 msg: "email or the password is not corerct",
             });
-
+            
         let token = jwt.sign(
             {
                 authorId: author._id,

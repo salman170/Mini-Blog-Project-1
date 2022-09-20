@@ -192,12 +192,14 @@ const deleteBlogByQuery = async function (req, res) {
 
         let obj = req.query
         obj["isDeleted"] = false
-        let findblogs = await blogModel.find(obj).select({ _id: 1 })
+        obj["isPublished"] = true
+        console.log(obj)
+        let findblogs = await blogModel.find(obj)
+        
         if (findblogs.length == 0) { return res.status(404).send({ status: false, msg: "No data found" }) }
-        for (let i in findblogs) {
-            let deletedocument = await blogModel.updateOne({ _id: findblogs[i]._id }, { isDeleted: true, deletedAt: Date.now() }
-            )
-        }
+        let deletedocument = await blogModel.updateMany(obj, { isDeleted: true, deletedAt: Date.now() })
+
+        
         res.status(200).send()
     }
     catch (err) {
